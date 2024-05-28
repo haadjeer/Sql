@@ -1,0 +1,31 @@
+Retrieve information about the first 5 customers.
+Retrieve the name, composer, and unit price of 10 tracks.
+Retrieve distinct first names of employees.
+Count the total number of tracks.
+Count the total number of distinct first names of employees.
+Retrieve tracks where the unit price is greater than 1.0, limited to 10.
+Count tracks where the unit price is between 1.0 and 10.
+Retrieve billing information for invoices from Paris or Berlin.
+Retrieve billing information for invoices not from Paris or Berlin.
+Retrieve invoices from selected cities, limited to 5 each.
+Retrieve invoices not from selected cities, limited to 5 each.
+Retrieve invoices with total amounts between 5 and 15.
+Count invoices where the billing state is NULL.
+Retrieve invoice details where the total amount is not NULL.
+Retrieve tracks with names starting with 'B'.
+Retrieve tracks with 'beautiful' in the name.
+Retrieve tracks starting with 'F' and with a unit price over 1.0.
+Calculate various statistics from invoice totals.
+Calculate statistics and retrieve billing information.
+Calculate statistics for Paris billing only.
+Perform integer and float division.
+Convert milliseconds to minutes.
+Calculate total invoice amount with an alias.
+Calculate and retrieve various statistics.
+Retrieve tracks where the composer is not 'None'.
+Retrieve tracks ordered by various criteria.
+Count tracks per genre.
+Retrieve genre information with track counts.
+Retrieve genre and album statistics.
+Retrieve genre and album statistics ordered by duration and count.
+Retrieve genre IDs with counts over 100.

@@ -1,0 +1,85 @@
+SELECT * FROM customer LIMIT 5;
+SELECT name, composer, unitprice FROM track LIMIT 10;
+SELECT DISTINCT firstname FROM employee;
+SELECT COUNT(*) AS total_tracks FROM track;
+SELECT COUNT(DISTINCT firstname) AS total_distinct_names FROM employee;
+SELECT * FROM track WHERE unitprice > 1.0 LIMIT 10;
+SELECT COUNT(*) AS tracks_count FROM track WHERE unitprice BETWEEN 1.0 AND 10.0;
+SELECT * FROM invoice WHERE billingcity IN ('Paris', 'Berlin');
+SELECT * FROM invoice WHERE billingcity NOT IN ('Paris', 'Berlin');
+(SELECT * FROM invoice WHERE billingcity IN ('City1', 'City2', 'City3') LIMIT 5)
+UNION ALL
+(SELECT * FROM invoice WHERE billingcity IN ('City4', 'City5', 'City6') LIMIT 5);
+(SELECT * FROM invoice WHERE billingcity NOT IN ('City1', 'City2', 'City3') LIMIT 5)
+UNION ALL
+(SELECT * FROM invoice WHERE billingcity NOT IN ('City4', 'City5', 'City6') LIMIT 5);
+SELECT * FROM invoice WHERE total BETWEEN 5 AND 15;
+SELECT COUNT(*) AS null_billing_state FROM invoice WHERE billingstate IS NULL;
+SELECT * FROM invoice WHERE total IS NOT NULL;
+SELECT * FROM track WHERE name LIKE 'B%';
+SELECT * FROM track WHERE name LIKE '%beautiful%';
+SELECT * FROM track WHERE name LIKE 'F%' AND unitprice > 1.0;
+SELECT 
+    COUNT(*) AS total_invoices,
+    SUM(total) AS total_amount,
+    AVG(total) AS avg_amount,
+    MAX(total) AS max_amount,
+    MIN(total) AS min_amount
+FROM invoice;
+SELECT 
+    billingcity,
+    COUNT(*) AS total_invoices,
+    SUM(total) AS total_amount,
+    AVG(total) AS avg_amount,
+    MAX(total) AS max_amount,
+    MIN(total) AS min_amount
+FROM invoice
+GROUP BY billingcity;
+SELECT 
+    COUNT(*) AS total_invoices,
+    SUM(total) AS total_amount,
+    AVG(total) AS avg_amount,
+    MAX(total) AS max_amount,
+    MIN(total) AS min_amount
+FROM invoice
+WHERE billingcity = 'Paris';
+SELECT 10 / 3 AS integer_division_result,
+       10.0 / 3.0 AS float_division_result;
+SELECT milliseconds / (1000 * 60) AS minutes FROM table_name;
+SELECT SUM(total) AS total_invoice_amount FROM invoice;
+SELECT 
+    COUNT(*) AS total_tracks,
+    AVG(unitprice) AS avg_price,
+    MAX(unitprice) AS max_price,
+    MIN(unitprice) AS min_price
+FROM track;
+SELECT * FROM track WHERE composer <> 'None';
+SELECT * FROM track ORDER BY name ASC;
+SELECT * FROM track ORDER BY unitprice DESC;
+SELECT genreid, COUNT(*) AS tracks_count FROM track GROUP BY genreid;
+SELECT genres.name AS genre, COUNT(tracks.trackid) AS tracks_count
+FROM genres
+JOIN track ON genres.genreid = track.genreid
+GROUP BY genres.name;
+SELECT 
+    genres.name AS genre,
+    COUNT(tracks.trackid) AS tracks_count,
+    COUNT(DISTINCT albums.albumid) AS album_count
+FROM genres
+JOIN track ON genres.genreid = track.genreid
+JOIN album ON track.albumid = album.albumid
+GROUP BY genres.name;
+SELECT 
+    genres.name AS genre,
+    COUNT(tracks.trackid) AS tracks_count,
+    COUNT(DISTINCT album.albumid) AS album_count,
+    SUM(tracks.milliseconds) AS total_duration
+FROM genres
+JOIN track ON genres.genreid = track.genreid
+JOIN album ON track.albumid = album.albumid
+GROUP BY genres.name
+ORDER BY total_duration DESC, tracks_count DESC;
+SELECT genreid, COUNT(*) AS tracks_count
+FROM track
+GROUP BY genreid
+HAVING COUNT(*) > 100;

@@ -1,0 +1,274 @@
+Question: Retrieve information about the first 5 customers.
+Generated SQL Query: SELECT "customerid", "firstname", "lastname", "company" FROM customer LIMIT 5;
+
+Question: Retrieve information about the first 5 customers.
+Generated SQL Query: SELECT "customerid", "firstname", "lastname", "company", "city", "state", "country"
+
+Question: Retrieve the name, composer, and unit price of 10 tracks.
+Generated SQL Query: SELECT "name", "composer", "unitprice"
+
+Question: Retrieve distinct first names of employees.
+Generated SQL Query: SELECT DISTINCT "firstname" FROM employee;
+
+Question: Count the total number of tracks.
+Generated SQL Query: SELECT COUNT(*) FROM playlisttrack;
+
+Question: Count the total number of distinct first names of employees.
+Generated SQL Query: SELECT SUBSTRING(name, '^[^ ]+') AS first_name
+
+Question: Retrieve tracks where the unit price is greater than 1.0, limited to 10.
+Error: (psycopg2.errors.UndefinedFunction) operator does not exist: character varying > numeric
+LINE 3: WHERE "track".unitprice > 1.0
+                                ^
+HINT:  No operator matches the given name and argument types. You might need to add explicit type casts.
+
+[SQL: SELECT "track".trackid, "track".name, "track".unitprice
+FROM "track"
+WHERE "track".unitprice > 1.0
+ORDER BY "track".unitprice DESC
+LIMIT 10;]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+
+Question: Count tracks where the unit price is between 1.0 and 10.
+Error: (psycopg2.errors.SyntaxError) syntax error at or near "```"
+LINE 1: ```
+        ^
+
+[SQL: ```
+SELECT COUNT(*)
+FROM "tracks"
+WHERE "unit_price" BETWEEN 1.0 AND 10;
+```]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+
+Question: Retrieve billing information for invoices from Paris or Berlin.
+Error: (psycopg2.errors.SyntaxError) syntax error at or near "```"
+LINE 1: ```
+        ^
+
+[SQL: ```
+SELECT "billingaddress", "billingcity", "billingcountry", "total"
+FROM invoice
+WHERE "billingcity" IN ('Paris', 'Berlin')
+LIMIT 5;
+```]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+
+Question: Retrieve billing information for invoices not from Paris or Berlin.
+Error: Error code: 400 - {'error': {'message': 'Please reduce the length of the messages or completion.', 'type': 'invalid_request_error', 'param': 'messages', 'code': 'context_length_exceeded'}}
+
+Question: Retrieve invoices from selected cities, limited to 5 each.
+Generated SQL Query: SELECT "customer".city, "customer".company
+
+Question: Retrieve invoices not from selected cities, limited to 5 each.
+Error: (psycopg2.errors.UndefinedTable) relation "Invoice" does not exist
+LINE 2: FROM "Invoice"
+             ^
+
+[SQL: SELECT "Invoice".city, COUNT(*) as count
+FROM "Invoice"
+WHERE "Invoice".city NOT IN (SELECT "City".name FROM "City")
+GROUP BY "Invoice".city
+ORDER BY count DESC
+LIMIT 5;]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+
+Question: Retrieve invoices with total amounts between 5 and 15.
+Error: SQL Query not found in result
+
+Question: Count invoices where the billing state is NULL.
+Error: (psycopg2.errors.SyntaxError) syntax error at or near "```"
+LINE 1: ```
+        ^
+
+[SQL: ```
+SELECT quotes."InvoiceID", quotes."BillingState"
+FROM quotes
+WHERE quotes."BillingState" IS NULL;
+```]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+
+Question: Retrieve invoice details where the total amount is not NULL.
+Error: Error code: 400 - {'error': {'message': 'Please reduce the length of the messages or completion.', 'type': 'invalid_request_error', 'param': 'messages', 'code': 'context_length_exceeded'}}
+
+Question: Retrieve tracks with names starting with 'B'.
+Generated SQL Query: SELECT "name"
+
+Question: Retrieve tracks with 'beautiful' in the name.
+Generated SQL Query: SELECT "trackid" FROM playlisttrack WHERE "trackid" LIKE '%beautiful%';
+
+Question: Retrieve tracks starting with 'F' and with a unit price over 1.0.
+Error: (psycopg2.errors.SyntaxError) syntax error at or near "```"
+LINE 1: ```sql
+        ^
+
+[SQL: ```sql
+SELECT "trackid", "name", "unitprice"
+FROM "track"
+WHERE "name" LIKE 'F%%' AND "unitprice" > 1.0
+ORDER BY "name"
+LIMIT 5;
+```]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+
+Question: Calculate various statistics from invoice totals.
+Error: (psycopg2.errors.UndefinedFunction) function avg(character varying) does not exist
+LINE 3:     AVG("total") AS average_amount,
+            ^
+HINT:  No function matches the given name and argument types. You might need to add explicit type casts.
+
+[SQL: SELECT
+    "total" AS total_amount,
+    AVG("total") AS average_amount,
+    MIN("total") AS minimum_amount,
+    MAX("total") AS maximum_amount,
+    COUNT(*) AS total_invoices
+FROM
+    "invoice"]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+
+Question: Calculate statistics and retrieve billing information.
+Error: (psycopg2.errors.SyntaxError) syntax error at or near "```"
+LINE 1: ```sql
+        ^
+
+[SQL: ```sql
+SELECT
+    "trackid",
+    "name",
+    "unitprice"
+FROM
+    track
+WHERE
+    "unitprice" > 0.99
+ORDER BY
+    "unitprice" DESC
+LIMIT 5;
+```]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+
+Question: Calculate statistics for Paris billing only.
+Error: (psycopg2.errors.AmbiguousColumn) column reference "customerid" is ambiguous
+LINE 1: SELECT "customerid", "customer".firstname, "customer".lastna...
+               ^
+
+[SQL: SELECT "customerid", "customer".firstname, "customer".lastname, "invoice".billingaddress, "invoice".total
+FROM "customer"
+JOIN "invoice" ON "customer".customerid = "invoice".customerid
+WHERE "customer".country = 'France'
+AND "invoice".billingaddress LIKE '%%Paris%%'
+LIMIT 5;]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+
+Question: Perform integer and float division.
+Error: (psycopg2.errors.UndefinedTable) relation "table1" does not exist
+LINE 2: FROM "table1"
+             ^
+
+[SQL: SELECT "table1"."int_col" AS "Integer", "table1"."float_col" AS "Float"
+FROM "table1"
+WHERE "table1"."int_col" != 0 AND "table1"."float_col" != 0;]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+
+Question: Convert milliseconds to minutes.
+Generated SQL Query: SELECT EXTRACT(EPOCH FROM TIMESTAMP '1970-01-01' + INTERVAL '5' second) / 60 AS minutes;
+
+Question: Calculate total invoice amount with an alias.
+Generated SQL Query: SELECT "total" AS total_invoice_amount FROM invoice;
+
+Question: Calculate and retrieve various statistics.
+Error: (psycopg2.errors.SyntaxError) syntax error at or near "```"
+LINE 1: ```
+        ^
+
+[SQL: ```
+SELECT
+    AVG(unitprice) AS average_unit_price,
+    MIN(unitprice) AS minimum_unit_price,
+    MAX(unitprice) AS maximum_unit_price,
+    COUNT(*) AS total_tracks,
+    SUM(milliseconds) AS total_milliseconds
+FROM
+    track
+```]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+
+Question: Retrieve tracks where the composer is not 'None'.
+Error: (psycopg2.errors.UndefinedColumn) column track.artistid does not exist
+LINE 3: JOIN "artist" ON "track"."artistid" = "artist"."artistid"
+                         ^
+
+[SQL: SELECT "track".name AS "Track Name", "artist".name AS "Artist Name", "composer" AS "Composer"
+FROM "track"
+JOIN "artist" ON "track"."artistid" = "artist"."artistid"
+WHERE "composer" IS NOT NULL AND "composer" <> 'None'
+ORDER BY "Track Name"
+LIMIT 5;]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+
+Question: Retrieve tracks ordered by various criteria.
+Error: Error code: 400 - {'error': {'message': 'Please reduce the length of the messages or completion.', 'type': 'invalid_request_error', 'param': 'messages', 'code': 'context_length_exceeded'}}
+
+Question: Count tracks per genre.
+Error: (psycopg2.errors.UndefinedTable) relation "tracks" does not exist
+LINE 1: ...s.name, COUNT(tracks.trackid) AS track_count FROM tracks JOI...
+                                                             ^
+
+[SQL: SELECT genres.name, COUNT(tracks.trackid) AS track_count FROM tracks JOIN albums ON tracks.albumid = albums.albumid JOIN genres ON tracks.genreid = genres.genreid GROUP BY genres.name ORDER BY track_count DESC LIMIT 5;]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+
+Question: Retrieve genre information with track counts.
+Error: SQL Query not found in result
+
+Question: Retrieve genre and album statistics.
+Error: (psycopg2.errors.UndefinedFunction) operator does not exist: character varying = integer
+LINE 8:     genre g ON a.artistid = 1 AND a.albumid = 1
+                                  ^
+HINT:  No operator matches the given name and argument types. You might need to add explicit type casts.
+
+[SQL: SELECT
+    g.name AS "Genre",
+    COUNT(a.albumid) AS "Number of Albums",
+    COUNT(DISTINCT a.albumid) AS "Number of Unique Albums"
+FROM
+    album a
+JOIN
+    genre g ON a.artistid = 1 AND a.albumid = 1
+GROUP BY
+    g.name
+ORDER BY
+    "Number of Unique Albums" DESC;]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+
+Question: Retrieve genre and album statistics ordered by duration and count.
+Error: (psycopg2.errors.SyntaxError) syntax error at or near "```"
+LINE 1: ```
+        ^
+
+[SQL: ```
+SELECT
+    a.albumid,
+    a.title,
+    COUNT(a.albumid) AS count,
+    AVG(a.duration) AS average_duration
+FROM
+    album a
+GROUP BY
+    a.albumid, a.title
+ORDER BY
+    average_duration DESC, count DESC;
+```]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+
+Question: Retrieve genre IDs with counts over 100.
+Error: (psycopg2.errors.SyntaxError) syntax error at or near "```"
+LINE 1: ```sql
+        ^
+
+[SQL: ```sql
+SELECT COUNT(DISTINCT ""invoicelineid"") AS genre_id, COUNT(*) AS count
+FROM invoiceline
+GROUP BY ""invoicelineid""
+HAVING COUNT(*) > 100;
+```]
+(Background on this error at: https://sqlalche.me/e/20/f405)
